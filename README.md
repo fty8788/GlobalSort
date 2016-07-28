@@ -1,5 +1,5 @@
 # GlobalSort
-Hadoop对文本文件的快速全局排序
+Hadoop对文本文件的快速全局排序<br>
 一、背景<br>
 Hadoop中实现了用于全局排序的InputSampler类和TotalOrderPartitioner类，调用示例是org.apache.hadoop.examples.Sort。<br>
 但是当我们以Text文件作为输入时，结果并非按Text中的string列排序，而且输出结果是SequenceFile。<br>
@@ -7,34 +7,34 @@ Hadoop中实现了用于全局排序的InputSampler类和TotalOrderPartitioner�
 1） hadoop在处理Text文件时，key是行号LongWritable类型，InputSampler抽样的是key，TotalOrderPartitioner也是用key去查找分区。这样，抽样得到的partition文件是对行号的抽样，结果自然是根据行号来排序。<br>
 2）大数据量时，InputSampler抽样速度会非常慢。比如，RandomSampler需要遍历所有数据，IntervalSampler需要遍历文件数与splits数一样。SplitSampler效率比较高，但它只抽取每个文件前面的记录，不适合应用于文件内有序的情况。<br>
 
-二、功能
-1. 实现了一种局部抽样方法PartialSampler，适用于输入数据各文件是独立同分布的情况
-2. 使RandomSampler、IntervalSampler、SplitSampler支持对文本的抽样
-3. 实现了针对Text文件string列的TotalOrderPartitioner
+二、功能<br>
+1. 实现了一种局部抽样方法PartialSampler，适用于输入数据各文件是独立同分布的情况<br>
+2. 使RandomSampler、IntervalSampler、SplitSampler支持对文本的抽样<br>
+3. 实现了针对Text文件string列的TotalOrderPartitioner<br>
 
-三、使用
-usage：
-hadoop jar yitengfei.jar com.yitengfei.Sort [-m <maps>] [-r <reduces>]
-[-splitRandom <double pcnt> <numSamples> <maxsplits> | // Sample from random splits at random (general)
--splitSample <numSamples> <maxsplits> | // Sample from first records in splits (random data)
--splitInterval <double pcnt> <maxsplits>] // Sample from splits at intervals (sorted data)
--splitPartial <double pcnt> <numSamples> <maxsplits> | // Sample from partial splits at random (general) ]
-<input> <output> <partitionfile>
-Example:
-hadoop jar yitengfei.jar com.yitengfei.Sort -r 10 -splitPartial 0.1 10000 10 /user/rp-rd/yitengfei/sample/input /user/rp-rd/yitengfei/sample/output /user/rp-rd/yitengfei/sample/partition
+三、使用<br>
+usage：<br>
+hadoop jar yitengfei.jar com.yitengfei.Sort [-m <maps>] [-r <reduces>]<br>
+[-splitRandom <double pcnt> <numSamples> <maxsplits> | // Sample from random splits at random (general)<br>
+-splitSample <numSamples> <maxsplits> | // Sample from first records in splits (random data)<br>
+-splitInterval <double pcnt> <maxsplits>] // Sample from splits at intervals (sorted data)<br>
+-splitPartial <double pcnt> <numSamples> <maxsplits> | // Sample from partial splits at random (general) ]<br>
+<input> <output> <partitionfile><br>
+Example:<br>
+hadoop jar yitengfei.jar com.yitengfei.Sort -r 10 -splitPartial 0.1 10000 10 /user/rp-rd/yitengfei/sample/input<br> /user/rp-rd/yitengfei/sample/output /user/rp-rd/yitengfei/sample/partition<br>
 
-四、性能
-200G输入数据，15亿条url，排序时间只用了6分钟
+四、性能<br>
+200G输入数据，15亿条url，排序时间只用了6分钟<br>
 
-五、实现
-1. PartialSampler
-从第一份输入数据中随机抽取第一列文本数据。
-public K[] getSample(InputFormat<K,V> inf, JobConf job) throws IOException {
-      InputSplit[] splits = inf.getSplits(job, job.getNumMapTasks());
-      ArrayList<K> samples = new ArrayList<K>(numSamples);
-      Random r = new Random();
-      long seed = r.nextLong();
-      r.setSeed(seed);
+五、实现<br>
+1. PartialSampler<br>
+从第一份输入数据中随机抽取第一列文本数据。<br>
+public K[] getSample(InputFormat<K,V> inf, JobConf job) throws IOException {<br>
+      InputSplit[] splits = inf.getSplits(job, job.getNumMapTasks());<br>
+      ArrayList<K> samples = new ArrayList<K>(numSamples);<br>
+      Random r = new Random();<br>
+      long seed = r.nextLong();<br>
+      r.setSeed(seed);<br>
       LOG.debug("seed: " + seed);      
       // 对splits【0】抽样
       for (int i = 0; i < 1; i++) {
