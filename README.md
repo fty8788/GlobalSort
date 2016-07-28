@@ -131,13 +131,13 @@ note：
 2）初始化InputSampler对象，执行抽样
 <p />
 3）partitionFile通过CacheFile传给TotalOrderPartitioner，执行MapReduce任务
-<pre style="margin-top: 0px; margin-bottom: 0px; margin-left: 22px; white-space: pre-wrap; word-wrap: break-word; font-size: 12px; color: #000000; line-height: 18px; font-family: 'Courier New' !important;"> <span style="line-height: 1.5 !important;">
-    Class<!--? extends InputFormat--> inputFormatClass = TextInputFormat.class;
-    Class<!--? extends OutputFormat--> outputFormatClass = TextOutputFormat.class;
-    Class<!--? extends WritableComparable--> outputKeyClass = Text.class;
-    Class<!--? extends Writable--> outputValueClass = Text.class;
+<pre style="margin-top: 0px; margin-bottom: 0px; margin-left: 22px; white-space: pre-wrap; word-wrap: break-word; font-size: 12px; color: #000000; line-height: 18px; font-family: 'Courier New' !important;">
+    Class inputFormatClass = TextInputFormat.class;
+    Class outputFormatClass = TextOutputFormat.class;
+    Class outputKeyClass = Text.class;
+    Class outputValueClass = Text.class;
 
-    jobConf.setMapOutputKeyClass(LongWritable.</span><span style="color: #0000ff; line-height: 1.5 !important;">class</span><span style="line-height: 1.5 !important;">);
+    jobConf.setMapOutputKeyClass(LongWritable.class);
     jobConf.setNumReduceTasks(num_reduces);
     
     jobConf.setInputFormat(inputFormatClass);
@@ -146,20 +146,20 @@ note：
     jobConf.setOutputKeyClass(outputKeyClass);
     jobConf.setOutputValueClass(outputValueClass);
     if (sampler != null ) {
-      System.out.println(</span>"Sampling input to effect total-order sort..."<span style="line-height: 1.5 !important;">);
-      jobConf.setPartitionerClass(TotalOrderPartitioner.</span><span style="color: #0000ff; line-height: 1.5 !important;">class</span><span style="line-height: 1.5 !important;">);
-      Path inputDir </span>= FileInputFormat.getInputPaths(jobConf)[0<span style="line-height: 1.5 !important;">];
-      inputDir </span>=<span style="line-height: 1.5 !important;"> inputDir.makeQualified(inputDir.getFileSystem(jobConf));
+      System.out.println("Sampling input to effect total-order sort...");
+      jobConf.setPartitionerClass(TotalOrderPartitioner.class);
+      Path inputDir = FileInputFormat.getInputPaths(jobConf)[0];
+      inputDir = inputDir.makeQualified(inputDir.getFileSystem(jobConf));
       TotalOrderPartitioner.setPartitionFile(jobConf, partitionFile);
-      InputSampler.</span>&lt;K,V&gt;<span style="line-height: 1.5 !important;">writePartitionFile(jobConf, sampler);
+      InputSampler.&lt;K,V&gt;writePartitionFile(jobConf, sampler);
       
-      URI partitionUri </span>= <span style="color: #0000ff; line-height: 1.5 !important;">new</span> URI(partitionFile.toString() + "#" + "_sortPartitioning"<span style="line-height: 1.5 !important;">);
+      URI partitionUri = new URI(partitionFile.toString() + "#" + "_sortPartitioning");
       DistributedCache.addCacheFile(partitionUri, jobConf);
       DistributedCache.createSymlink(jobConf);
     }
 
-    FileSystem hdfs </span>=<span style="line-height: 1.5 !important;"> FileSystem.get(jobConf);
+    FileSystem hdfs = FileSystem.get(jobConf);
     hdfs.delete(outputpath);
     hdfs.close();
-    </span><span style="line-height: 1.5 !important;">
-    jobResult </span>= JobClient.runJob(jobConf);</pre> </div>
+    
+    jobResult = JobClient.runJob(jobConf);</pre> </div>
