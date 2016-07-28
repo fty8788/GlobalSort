@@ -131,7 +131,7 @@ note：
 2）初始化InputSampler对象，执行抽样
 <p />
 3）partitionFile通过CacheFile传给TotalOrderPartitioner，执行MapReduce任务
-<pre style="margin-top: 0px; margin-bottom: 0px; margin-left: 22px; white-space: pre-wrap; word-wrap: break-word; font-size: 12px; color: #000000; line-height: 18px; font-family: 'Courier New' !important;">
+<div><pre style="margin-top: 0px; margin-bottom: 0px; margin-left: 22px; white-space: pre-wrap; word-wrap: break-word; font-size: 12px; color: #000000; line-height: 18px; font-family: 'Courier New' !important;">
     Class inputFormatClass = TextInputFormat.class;
     Class outputFormatClass = TextOutputFormat.class;
     Class outputKeyClass = Text.class;
