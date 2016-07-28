@@ -1,11 +1,11 @@
 # GlobalSort
 Hadoop对文本文件的快速全局排序
-一、背景
-Hadoop中实现了用于全局排序的InputSampler类和TotalOrderPartitioner类，调用示例是org.apache.hadoop.examples.Sort。
-但是当我们以Text文件作为输入时，结果并非按Text中的string列排序，而且输出结果是SequenceFile。
-原因：
-1） hadoop在处理Text文件时，key是行号LongWritable类型，InputSampler抽样的是key，TotalOrderPartitioner也是用key去查找分区。这样，抽样得到的partition文件是对行号的抽样，结果自然是根据行号来排序。
-2）大数据量时，InputSampler抽样速度会非常慢。比如，RandomSampler需要遍历所有数据，IntervalSampler需要遍历文件数与splits数一样。SplitSampler效率比较高，但它只抽取每个文件前面的记录，不适合应用于文件内有序的情况。
+一、背景<br>
+Hadoop中实现了用于全局排序的InputSampler类和TotalOrderPartitioner类，调用示例是org.apache.hadoop.examples.Sort。<br>
+但是当我们以Text文件作为输入时，结果并非按Text中的string列排序，而且输出结果是SequenceFile。<br>
+原因：<br>
+1） hadoop在处理Text文件时，key是行号LongWritable类型，InputSampler抽样的是key，TotalOrderPartitioner也是用key去查找分区。这样，抽样得到的partition文件是对行号的抽样，结果自然是根据行号来排序。<br>
+2）大数据量时，InputSampler抽样速度会非常慢。比如，RandomSampler需要遍历所有数据，IntervalSampler需要遍历文件数与splits数一样。SplitSampler效率比较高，但它只抽取每个文件前面的记录，不适合应用于文件内有序的情况。<br>
 
 二、功能
 1. 实现了一种局部抽样方法PartialSampler，适用于输入数据各文件是独立同分布的情况
