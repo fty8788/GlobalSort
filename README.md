@@ -27,7 +27,6 @@
 3. 实现了针对Text文件string列的TotalOrderPartitioner
 <h2><a name="三、下载、使用"></a> 三、下载、使用 </h2>
 <p />
-wget <a href="ftp://cq01-2012h1-rptest34.vm.baidu.com//home/work/totalorder/yitengfei.jar" target="_top">ftp://cq01-2012h1-rptest34.vm.baidu.com//home/work/totalorder/yitengfei.jar</a>
 <p />
 usage：
 <p />
